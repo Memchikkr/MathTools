@@ -30,10 +30,13 @@ def convert_images_to_pdf(
             prepared_images.append(io.BytesIO(data))
 
         except Exception as e:
-            raise Exception(f"{filename}: {str(e)}")
+            raise ValueError(f"{filename}: {str(e)}")
 
     if not prepared_images:
-        return b""
+        raise ValueError(
+            "Нет поддерживаемых изображений. "
+            + ("; ".join(errors) if errors else "")
+        )
 
     # Настройки img2pdf
     kwargs = {}
@@ -48,4 +51,4 @@ def convert_images_to_pdf(
         pdf_bytes = img2pdf.convert(prepared_images, **kwargs)
         return pdf_bytes
     except Exception as e:
-        raise Exception(f"Ошибка создания PDF: {str(e)}")
+        raise ValueError(f"Ошибка создания PDF: {str(e)}")
