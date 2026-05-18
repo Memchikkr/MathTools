@@ -18,7 +18,7 @@
         "resizable": true,
         "fullscreen": false,
         "devtools": true,
-        "visible": false
+        "visible": true
       }
     ],
     "security": {
