@@ -25,22 +25,7 @@ fn main() {
 
                         *BACKEND_CHILD.lock().unwrap() = Some(child);
 
-                        // Ждём пока бэкенд поднимется
-                        loop {
-                            match reqwest::blocking::get("http://127.0.0.1:8000/") {
-                                Ok(_) => break,
-                                Err(_) => std::thread::sleep(std::time::Duration::from_millis(300)),
-                            }
-                        }
-
-                        // Небольшая задержка чтобы фронтенд успел загрузиться
-                        std::thread::sleep(std::time::Duration::from_millis(500));
-
-                        // Показываем окно только когда бэкенд готов
-                        if let Some(window) = app_handle.get_webview_window("main") {
-                            let _ = window.show();
-                        }
-
+                        // Готовность бэкенда проверяет фронтенд (см. BackendGate)
                         tauri::async_runtime::block_on(async move {
                             while let Some(event) = rx.recv().await {
                                 match event {
