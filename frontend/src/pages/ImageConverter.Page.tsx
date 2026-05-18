@@ -16,7 +16,7 @@ import {
 import { notifications } from '@mantine/notifications';
 import { IconDownload, IconPhoto } from '@tabler/icons-react';
 import axios from '../api/axios';
-import { saveAs } from 'file-saver';
+import { saveBlob } from '../api/saveFile';
 import { BackButton } from '../components/BackButton';
 
 export function ImageConverterPage() {
@@ -70,7 +70,7 @@ export function ImageConverterPage() {
       }
 
       const blob = new Blob([response.data], { type: 'application/zip' });
-      saveAs(blob, filename);
+      await saveBlob(blob, filename);
       notifications.show({
         title: 'Успех',
         message: 'Конвертация завершена',
