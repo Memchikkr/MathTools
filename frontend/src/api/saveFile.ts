@@ -21,6 +21,8 @@ export async function saveBlob(blob: Blob, filename: string): Promise<void> {
         return; // пользователь отменил диалог
     }
 
-    const contents = Array.from(new Uint8Array(await blob.arrayBuffer()));
+    // Передаём байты напрямую: Tauri v2 шлёт Uint8Array сырыми байтами
+    // (Array.from раздувал бы файл в JSON-массив из миллионов чисел)
+    const contents = new Uint8Array(await blob.arrayBuffer());
     await invoke('save_file', { path, contents });
 }
