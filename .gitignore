@@ -1,6 +1,7 @@
 node_modules
 src-tauri/target/
 src-tauri/gen/schemas
+src-tauri/math-tools-backend-x86_64-pc-windows-msvc.exe
 frontend/node_modules
 frontend/.pnp
 frontend/.pnp.js
@@ -18,3 +19,9 @@ frontend/.env.production.local
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
+
+backend/.venv
+backend/dist
+backend/build
+backend/math-tools-backend.spec
+**__pycache__
