@@ -1,17 +1,20 @@
 import sympy as sp
 from typing import Tuple
 
+from core.safe_math import safe_parse
+
 
 def compute_derivative(
     expression: str, variable: str = "x", order: int = 1
 ) -> Tuple[str, str]:
     """
-    Возвращает: (результат_str, результат_latex)
+    Возвращает: (результат_str, результат_latex).
+    Ошибки ввода пробрасываются как ValueError.
     """
+    var = sp.symbols(variable)
+    expr = safe_parse(expression)
     try:
-        var = sp.symbols(variable)
-        expr = sp.sympify(expression)
         derivative = sp.diff(expr, var, order)
-        return str(derivative), sp.latex(derivative)
     except Exception as e:
-        raise Exception(f"Произошла ошибка при вычислении производной: {str(e)}")
+        raise ValueError(f"Не удалось вычислить производную: {e}")
+    return str(derivative), sp.latex(derivative)

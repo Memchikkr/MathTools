@@ -23,7 +23,6 @@ export function IntegralCalculatorPage() {
     const [isDefinite, setIsDefinite] = useState(false);
     const [lowerLimit, setLowerLimit] = useState('0');
     const [upperLimit, setUpperLimit] = useState('1');
-    const [result, setResult] = useState<string | null>(null);
     const [resultLatex, setResultLatex] = useState<string | null>(null);
     const [numericValue, setNumericValue] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -41,7 +40,6 @@ export function IntegralCalculatorPage() {
 
         setLoading(true);
         setError(null);
-        setResult(null);
         setResultLatex(null);
         setNumericValue(null);
 
@@ -56,7 +54,6 @@ export function IntegralCalculatorPage() {
             if (response.data.error) {
                 setError(response.data.error);
             } else {
-                setResult(response.data.result);
                 setResultLatex(response.data.result_latex);
                 setNumericValue(response.data.numeric_value);
             }

@@ -11,5 +11,7 @@ async def calculate(request: CalcRequest):
     try:
         result = evaluate_expression(request.expression)
         return CalcResponse(expression=request.expression, result=result)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

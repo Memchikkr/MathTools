@@ -1,28 +1,21 @@
-import sympy as sp
-from typing import Union, Any
+from typing import Union
+
+from core.safe_math import safe_parse
 
 
-def evaluate_symbolic(expression: str) -> Union[float, str, None]:
-    """
-    Символьное вычисление с помощью SymPy.
-    Возвращает (результат, сообщение об ошибке)
-    """
+def evaluate_symbolic(expression: str) -> Union[float, str]:
+    """Символьное вычисление выражения. Ошибки ввода — ValueError."""
     expr = expression.replace("^", "**")
-    try:
-        result = sp.sympify(expr)
-        # Если результат — число, конвертируем в float
-        if result.is_number:
+    result = safe_parse(expr)
+
+    if result.is_number:
+        try:
             return float(result)
-        # Иначе возвращаем строковое представление формулы
-        return str(result)
-    except sp.SympifyError as e:
-        raise Exception(f"Ошибка синтаксиса: {str(e)}")
-    except Exception as e:
-        raise Exception(f"Ошибка вычисления: {str(e)}")
+        except TypeError:
+            # комплексное число и т.п.
+            return str(result)
+    return str(result)
 
 
-def evaluate_expression(expression: str) -> Any:
-    """
-    Главная функция вычисления.
-    """
+def evaluate_expression(expression: str) -> Union[float, str]:
     return evaluate_symbolic(expression)

@@ -23,5 +23,7 @@ async def convert_docx_to_pdf_endpoint(
         )
         response.headers["Content-Disposition"] = f"attachment; filename={new_filename}"
         return response
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

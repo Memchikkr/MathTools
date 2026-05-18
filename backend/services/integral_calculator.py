@@ -1,6 +1,8 @@
 import sympy as sp
 from typing import Tuple, Optional
 
+from core.safe_math import safe_parse
+
 
 def compute_integral(
     expression: str,
@@ -9,23 +11,26 @@ def compute_integral(
     upper_limit: Optional[str] = None,
 ) -> Tuple[str, str, Optional[float]]:
     """
-    Возвращает: (результат_str, результат_latex, числовое_значение)
+    Возвращает: (результат_str, результат_latex, числовое_значение).
+    Ошибки ввода пробрасываются как ValueError.
     """
-    try:
-        var = sp.symbols(variable)
-        expr = sp.sympify(expression)
+    var = sp.symbols(variable)
+    expr = safe_parse(expression)
 
+    try:
         if lower_limit is not None and upper_limit is not None:
-            # Определённый интеграл
-            lower = sp.sympify(lower_limit)
-            upper = sp.sympify(upper_limit)
+            lower = safe_parse(lower_limit)
+            upper = safe_parse(upper_limit)
             integral = sp.integrate(expr, (var, lower, upper))
-            numeric = float(integral.evalf()) if not integral.has(sp.Symbol) else None
+            numeric = (
+                float(integral.evalf()) if not integral.has(sp.Symbol) else None
+            )
         else:
-            # Неопределённый интеграл
             integral = sp.integrate(expr, var)
             numeric = None
-
-        return str(integral), sp.latex(integral), numeric
+    except ValueError:
+        raise
     except Exception as e:
-        raise Exception(f"Произошла ошибка при вычислении интеграла: {str(e)}")
+        raise ValueError(f"Не удалось вычислить интеграл: {e}")
+
+    return str(integral), sp.latex(integral), numeric
