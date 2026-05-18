@@ -1,4 +1,4 @@
-import { Container, Grid, Title, Loader, Center, Alert, SimpleGrid } from '@mantine/core';
+import { Container, Loader, Center, Alert, SimpleGrid } from '@mantine/core';
 import { ModuleCard } from '../components/ModuleCard';
 import axios from '../api/axios';
 import { Module } from '../types/module';

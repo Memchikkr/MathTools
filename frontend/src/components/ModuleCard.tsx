@@ -1,4 +1,4 @@
-import { Card, Text, Group, ThemeIcon, Box } from '@mantine/core';
+import { Card, Text, ThemeIcon } from '@mantine/core';
 import * as Icons from '@tabler/icons-react';
 import { Module } from '../types/module';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,7 @@ export function ModuleCard({ module }: ModuleCardProps) {
             withBorder
             style={{
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                transition: 'background-color 0.15s ease',
                 height: '100%',
                 width: '100%',
                 display: 'flex',
@@ -37,13 +37,9 @@ export function ModuleCard({ module }: ModuleCardProps) {
             }}
             onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = 'var(--mantine-color-gray-0)';
-                e.currentTarget.style.transform = 'scale(1.02)';
-                e.currentTarget.style.zIndex = '1';
             }}
             onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'var(--mantine-color-body)';
-                e.currentTarget.style.transform = 'scale(1)';
-                e.currentTarget.style.zIndex = '0';
             }}
             onClick={handleClick}
         >
