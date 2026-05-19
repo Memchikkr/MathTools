@@ -81,7 +81,13 @@ def process_images(
             )
             converted_files.append((conv_data, new_name))
         except Exception as e:
-            raise Exception(f"Ошибка конвертации {original_name}: {str(e)}")
+            raise ValueError(f"Ошибка конвертации {original_name}: {str(e)}")
+
+    if not converted_files:
+        raise ValueError(
+            "Не удалось сконвертировать ни одного файла. "
+            + ("; ".join(errors) if errors else "")
+        )
 
     # Создаём ZIP-архив
     zip_buffer = io.BytesIO()

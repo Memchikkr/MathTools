@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import Any, List
 
 
 class MatrixRequest(BaseModel):
@@ -9,10 +9,11 @@ class MatrixRequest(BaseModel):
     )
     operation: str = Field(
         ...,
-        description="add, subtract, multiply, transpose, inverse, determinant, eigenvalues_eigenvectors",
+        description="add, subtract, multiply, transpose, inverse, determinant, eigen",
     )
 
 
 class MatrixResponse(BaseModel):
     operation: str
-    result: List[List[int | float]] | int | float | None = None
+    # result может быть матрицей, числом (определитель) или [значения, векторы] (eigen)
+    result: Any | None = None

@@ -13,12 +13,10 @@ import {
     Alert,
     Grid,
     ActionIcon,
-    Divider,
     LoadingOverlay,
 } from '@mantine/core';
-import { IconTrash, IconPlus, IconMinus, IconX } from '@tabler/icons-react';
+import { IconX } from '@tabler/icons-react';
 import axios from '../api/axios';
-import { notifications } from '@mantine/notifications';
 import { BackButton } from '../components/BackButton';
 
 // Типы для матриц

@@ -14,5 +14,7 @@ async def calculate_derivative(request: DerivativeRequest):
         return DerivativeResponse(
             expression=request.expression, result=result, result_latex=latex_result
         )
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

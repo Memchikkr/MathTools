@@ -49,5 +49,9 @@ async def convert_to_pdf(
         response.headers["Content-Disposition"] = f"attachment; filename={pdf_filename}"
 
         return response
+    except HTTPException:
+        raise
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

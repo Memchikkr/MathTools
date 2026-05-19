@@ -20,5 +20,7 @@ async def calculate_integral(request: IntegralRequest):
             result_latex=latex_result,
             numeric_value=numeric,
         )
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

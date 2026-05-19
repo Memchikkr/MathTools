@@ -32,24 +32,24 @@ async def convert_images(
                 detail=f"Неподдерживаемый формат. Допустимые: {', '.join(SUPPORTED_OUTPUT)}",
             )
 
-        # Читаем все файлы в память (для небольших объёмов — приемлемо)
+        # Читаем все файлы в память (для небольших объёмов — приемлемо).
+        # Поддерживаемые форматы проверяет process_images по расширению.
         file_data = []
         for file in files:
-            if file.content_type in {"image/jpeg", "image/png", "image/webp"}:
-                content = await file.read()
-                file_data.append((content, file.filename))
-        # Обрабатываем
+            content = await file.read()
+            file_data.append((content, file.filename))
+
         zip_bytes = process_images(file_data, target_format, quality, background_color)
-        # Возвращаем ZIP-архив
+
         zip_filename = f"converted_{target_format}.zip"
         response = StreamingResponse(
             io.BytesIO(zip_bytes), media_type="application/zip"
         )
         response.headers["Content-Disposition"] = f"attachment; filename={zip_filename}"
-
         return response
+    except HTTPException:
+        raise
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=str(e),
-        )
+        raise HTTPException(status_code=500, detail=str(e))

@@ -34,7 +34,7 @@ async def init_database(db_path: Path):
                     (
                         "image-converter",
                         "Конвертер изображений",
-                        "Пакетная конвертация JPG, PNG, WEBP, SVG и др.",
+                        "Пакетная конвертация JPG, PNG, WEBP, BMP, TIFF, ICO",
                         "Photo",
                     ),
                     (
