@@ -193,7 +193,7 @@ export function MatrixCalculatorPage() {
 
         if (typeof result === 'number') {
             return (
-                <Paper withBorder p="md" bg="gray.9">
+                <Paper withBorder p="md" bg="var(--mantine-color-default-hover)">
                     <Text size="sm" c="dimmed">Результат:</Text>
                     <Text fw={700} size="xl">{result}</Text>
                 </Paper>
