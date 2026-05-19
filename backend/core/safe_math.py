@@ -20,6 +20,12 @@ _NAMESPACE["ln"] = sp.log
 _NAMESPACE["abs"] = sp.Abs
 _NAMESPACE["e"] = sp.E
 
+# Служебные конструкторы, которые подставляет parse_expr при трансформациях
+# (auto_symbol -> Symbol, auto_number -> Integer/Float/Rational и т.п.).
+# Без них parse_expr падает с "name 'Symbol' is not defined".
+for _h in ("Symbol", "Integer", "Float", "Rational"):
+    _NAMESPACE[_h] = getattr(sp, _h)
+
 # __builtins__: {} закрывает доступ к import/eval/open и т.п.
 _GLOBALS = {"__builtins__": {}, **_NAMESPACE}
 
