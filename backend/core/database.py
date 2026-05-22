@@ -67,6 +67,12 @@ async def init_database(db_path: Path):
                         "Вычисление производных любого порядка",
                         "MathFunction",
                     ),
+                    (
+                        "number-theory",
+                        "Теория чисел",
+                        "НОД, НОК, факторизация и проверка простоты",
+                        "Number123",
+                    ),
                 ],
             )
             await conn.commit()
