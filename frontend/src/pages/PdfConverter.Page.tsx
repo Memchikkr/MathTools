@@ -4,6 +4,7 @@ import {
     Title,
     Paper,
     Stack,
+    Group,
     FileInput,
     Select,
     Button,
@@ -11,11 +12,13 @@ import {
     Alert,
     LoadingOverlay,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { IconFileTypePdf, IconDownload } from '@tabler/icons-react';
+import { IconFileTypePdf, IconDownload, IconFolderDown } from '@tabler/icons-react';
 import axios from '../api/axios';
-import { saveBlob } from '../api/saveFile';
+import { saveBlob, saveBlobToDownloads } from '../api/saveFile';
+import { showSavedNotification } from '../api/saveFile.notify';
 import { BackButton } from '../components/BackButton';
+
+type SaveFn = (blob: Blob, filename: string) => Promise<string | null>;
 
 export function PdfConverterPage() {
     const [files, setFiles] = useState<File[]>([]);
@@ -41,7 +44,7 @@ export function PdfConverterPage() {
         { value: 'exact', label: 'Точный размер (без масштабирования)' },
     ];
 
-    const handleConvert = async () => {
+    const handleConvert = async (saveFn: SaveFn) => {
         if (files.length === 0) {
             setError('Выберите хотя бы одно изображение');
             return;
@@ -73,12 +76,8 @@ export function PdfConverterPage() {
             }
 
             const blob = new Blob([response.data], { type: 'application/pdf' });
-            await saveBlob(blob, filename);
-            notifications.show({
-                title: 'Успех',
-                message: 'PDF создан',
-                color: 'green',
-            });
+            const path = await saveFn(blob, filename);
+            showSavedNotification(path);
         } catch (err: any) {
             console.error(err);
             setError(err.response?.data?.detail || 'Ошибка при создании PDF');
@@ -130,14 +129,23 @@ export function PdfConverterPage() {
                         onChange={(val) => setFit(val || 'into')}
                     />
 
-                    <Button
-                        onClick={handleConvert}
-                        loading={loading}
-                        leftSection={<IconDownload size={16} />}
-                        fullWidth
-                    >
-                        Создать PDF
-                    </Button>
+                    <Group grow>
+                        <Button
+                            onClick={() => handleConvert(saveBlob)}
+                            loading={loading}
+                            leftSection={<IconDownload size={16} />}
+                        >
+                            Сохранить как…
+                        </Button>
+                        <Button
+                            onClick={() => handleConvert(saveBlobToDownloads)}
+                            loading={loading}
+                            leftSection={<IconFolderDown size={16} />}
+                            variant="light"
+                        >
+                            В Загрузки
+                        </Button>
+                    </Group>
 
                     {error && (
                         <Alert title="Ошибка" color="red">

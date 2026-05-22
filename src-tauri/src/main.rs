@@ -20,11 +20,69 @@ async fn get_backend_port() -> Option<u16> {
     *BACKEND_PORT.lock().unwrap()
 }
 
+/// Открывает системный файловый менеджер на папке с указанным файлом,
+/// по возможности подсвечивая сам файл (Windows / macOS).
+#[tauri::command]
+async fn reveal_in_folder(path: String) -> Result<(), String> {
+    #[cfg(target_os = "windows")]
+    {
+        // explorer.exe /select,<path> выделит файл в проводнике
+        std::process::Command::new("explorer.exe")
+            .arg(format!("/select,{}", path))
+            .spawn()
+            .map_err(|e| e.to_string())?;
+        return Ok(());
+    }
+    #[cfg(target_os = "macos")]
+    {
+        std::process::Command::new("open")
+            .args(["-R", &path])
+            .spawn()
+            .map_err(|e| e.to_string())?;
+        return Ok(());
+    }
+    #[cfg(target_os = "linux")]
+    {
+        // xdg-open не умеет выделять файл — открываем содержащую папку
+        let dir = std::path::Path::new(&path)
+            .parent()
+            .unwrap_or_else(|| std::path::Path::new("."));
+        std::process::Command::new("xdg-open")
+            .arg(dir)
+            .spawn()
+            .map_err(|e| e.to_string())?;
+        return Ok(());
+    }
+}
+
+/// Возвращает путь к системной папке «Загрузки» в стиле текущей ОС.
+#[tauri::command]
+async fn get_default_save_dir() -> Result<String, String> {
+    #[cfg(target_os = "windows")]
+    {
+        let userprofile = std::env::var("USERPROFILE").map_err(|e| e.to_string())?;
+        return Ok(format!("{}\\Downloads", userprofile));
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        if let Ok(xdg) = std::env::var("XDG_DOWNLOAD_DIR") {
+            return Ok(xdg);
+        }
+        let home = std::env::var("HOME").map_err(|e| e.to_string())?;
+        return Ok(format!("{}/Downloads", home));
+    }
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
-        .invoke_handler(tauri::generate_handler![save_file, get_backend_port])
+        .invoke_handler(tauri::generate_handler![
+            save_file,
+            get_backend_port,
+            reveal_in_folder,
+            get_default_save_dir,
+        ])
         .setup(|app| {
             let app_handle = app.handle().clone();
 
