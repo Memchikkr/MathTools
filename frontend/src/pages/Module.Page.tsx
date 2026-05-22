@@ -7,6 +7,7 @@ import { DocxConverterPage } from './DocxConverter.Page';
 import { IntegralCalculatorPage } from './IntegralCalculator.Page';
 import { DerivativeCalculatorPage } from './DerivativeCalculator.Page';
 import { SlaeSolverPage } from './SlaeSolver.Page';
+import { OdeSolverPage } from './OdeSolver.Page';
 
 export function ModulePage() {
     const { modulePath } = useParams<{ modulePath: string }>();
@@ -29,6 +30,8 @@ export function ModulePage() {
             return <DerivativeCalculatorPage />;
         case 'slae-solver':
             return <SlaeSolverPage />;
+        case 'ode-solver':
+            return <OdeSolverPage />;
         default:
             return (
                 <div style={{ padding: '2rem', textAlign: 'center' }}>

@@ -73,6 +73,12 @@ async def init_database(db_path: Path):
                         "Гаусс с шагами, LU, итерационные Якоби и Зейделя",
                         "Math",
                     ),
+                    (
+                        "ode-solver",
+                        "Решатель ОДУ",
+                        "Задача Коши y'=f(x,y) методами Эйлера и Рунге-Кутта 4",
+                        "WaveSine",
+                    ),
                 ],
             )
             await conn.commit()
