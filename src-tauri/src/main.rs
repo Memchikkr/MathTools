@@ -6,17 +6,25 @@ use tauri_plugin_shell::ShellExt;
 
 static START_BACKEND: Once = Once::new();
 static BACKEND_CHILD: Mutex<Option<tauri_plugin_shell::process::CommandChild>> = Mutex::new(None);
+// Порт, на котором поднялся sidecar. Sidecar печатает строку
+// "BACKEND_PORT=NNNN" в stdout, мы её ловим и сохраняем здесь.
+static BACKEND_PORT: Mutex<Option<u16>> = Mutex::new(None);
 
 #[tauri::command]
 async fn save_file(path: String, contents: Vec<u8>) -> Result<(), String> {
     std::fs::write(&path, &contents).map_err(|e| e.to_string())
 }
 
+#[tauri::command]
+async fn get_backend_port() -> Option<u16> {
+    *BACKEND_PORT.lock().unwrap()
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
-        .invoke_handler(tauri::generate_handler![save_file])
+        .invoke_handler(tauri::generate_handler![save_file, get_backend_port])
         .setup(|app| {
             let app_handle = app.handle().clone();
 
@@ -43,10 +51,14 @@ fn main() {
                                         );
                                     }
                                     tauri_plugin_shell::process::CommandEvent::Stdout(line) => {
-                                        eprintln!(
-                                            "Backend stdout: {}",
-                                            String::from_utf8_lossy(&line)
-                                        );
+                                        let line_str = String::from_utf8_lossy(&line);
+                                        // Ловим строку BACKEND_PORT=NNNN от sidecar
+                                        if let Some(rest) = line_str.strip_prefix("BACKEND_PORT=") {
+                                            if let Ok(p) = rest.trim().parse::<u16>() {
+                                                *BACKEND_PORT.lock().unwrap() = Some(p);
+                                            }
+                                        }
+                                        eprintln!("Backend stdout: {}", line_str);
                                     }
                                     _ => {}
                                 }
