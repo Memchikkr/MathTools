@@ -68,6 +68,12 @@ async def init_database(db_path: Path):
                         "MathFunction",
                     ),
                     (
+                        "plotter",
+                        "Плоттер функций",
+                        "График f(x), f'(x) и первообразной на одной картинке",
+                        "ChartLine",
+                    ),
+                    (
                         "slae-solver",
                         "Решатель СЛАУ",
                         "Гаусс с шагами, LU, итерационные Якоби и Зейделя",

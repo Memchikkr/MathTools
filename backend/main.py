@@ -15,6 +15,7 @@ from modules.image_converter import router as image_converter_router
 from modules.matrix_calculator import router as matrix_calc_router
 from modules.pdf_converter import router as to_pdf_converter_router
 from modules.integral_calculator import router as integral_calc_router
+from modules.plotter import router as plotter_router
 from modules.slae import router as slae_router
 from modules.ode import router as ode_router
 
@@ -52,6 +53,7 @@ app.include_router(integral_calc_router)
 app.include_router(image_converter_router)
 app.include_router(docx_converter_router)
 app.include_router(to_pdf_converter_router)
+app.include_router(plotter_router)
 app.include_router(slae_router)
 app.include_router(ode_router)
 
