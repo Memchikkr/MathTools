@@ -67,6 +67,12 @@ async def init_database(db_path: Path):
                         "Вычисление производных любого порядка",
                         "MathFunction",
                     ),
+                    (
+                        "base-converter",
+                        "Системы счисления",
+                        "Перевод чисел между системами 2..36 с пошаговым выводом",
+                        "Binary",
+                    ),
                 ],
             )
             await conn.commit()

@@ -15,6 +15,7 @@ from modules.image_converter import router as image_converter_router
 from modules.matrix_calculator import router as matrix_calc_router
 from modules.pdf_converter import router as to_pdf_converter_router
 from modules.integral_calculator import router as integral_calc_router
+from modules.base_converter import router as base_converter_router
 
 
 @asynccontextmanager
@@ -50,6 +51,7 @@ app.include_router(integral_calc_router)
 app.include_router(image_converter_router)
 app.include_router(docx_converter_router)
 app.include_router(to_pdf_converter_router)
+app.include_router(base_converter_router)
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
