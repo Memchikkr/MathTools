@@ -40,29 +40,6 @@ export function MatrixCalculatorPage() {
     const [result, setResult] = useState<any>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
-    const [showMatrixB, setShowMatrixB] = useState(true); // для операций, требующих две матрицы
-
-    // Обновление размера матрицы (добавление/удаление строк/столбцов)
-    const updateMatrixSize = (
-        setter: React.Dispatch<React.SetStateAction<Matrix>>,
-        matrix: Matrix,
-        rows: number,
-        cols: number
-    ) => {
-        const newMatrix: Matrix = Array(rows)
-            .fill(null)
-            .map((_, i) =>
-                Array(cols)
-                    .fill(null)
-                    .map((_, j) => {
-                        if (i < matrix.length && j < matrix[i].length) {
-                            return matrix[i][j];
-                        }
-                        return 0;
-                    })
-            );
-        setter(newMatrix);
-    };
 
     const handleMatrixChange = (
         setter: React.Dispatch<React.SetStateAction<Matrix>>,

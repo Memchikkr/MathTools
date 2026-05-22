@@ -11,7 +11,6 @@ import {
   Text,
   Alert,
   LoadingOverlay,
-  Group,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconDownload, IconPhoto } from '@tabler/icons-react';

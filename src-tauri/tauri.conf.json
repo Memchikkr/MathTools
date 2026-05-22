@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "MathTools",
   "version": "0.1.0",
-  "identifier": "com.mathtools.app",
+  "identifier": "com.mathtools.desktop",
   "build": {
     "frontendDist": "../frontend/build",
     "devUrl": "http://localhost:3000",
