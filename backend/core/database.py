@@ -67,6 +67,12 @@ async def init_database(db_path: Path):
                         "Вычисление производных любого порядка",
                         "MathFunction",
                     ),
+                    (
+                        "plotter",
+                        "Плоттер функций",
+                        "График f(x), f'(x) и первообразной на одной картинке",
+                        "ChartLine",
+                    ),
                 ],
             )
             await conn.commit()

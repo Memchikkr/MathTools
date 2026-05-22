@@ -6,6 +6,7 @@ import { PdfConverterPage } from './PdfConverter.Page';
 import { DocxConverterPage } from './DocxConverter.Page';
 import { IntegralCalculatorPage } from './IntegralCalculator.Page';
 import { DerivativeCalculatorPage } from './DerivativeCalculator.Page';
+import { PlotterPage } from './Plotter.Page';
 
 export function ModulePage() {
     const { modulePath } = useParams<{ modulePath: string }>();
@@ -26,6 +27,8 @@ export function ModulePage() {
             return <IntegralCalculatorPage />;
         case 'derivative-calculator':
             return <DerivativeCalculatorPage />;
+        case 'plotter':
+            return <PlotterPage />;
         default:
             return (
                 <div style={{ padding: '2rem', textAlign: 'center' }}>
