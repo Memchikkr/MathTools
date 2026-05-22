@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import 'katex/dist/katex.min.css';
-import './katex-fix.css';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './Router';
 import { Notifications } from '@mantine/notifications';
