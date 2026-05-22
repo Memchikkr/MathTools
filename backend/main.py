@@ -67,18 +67,28 @@ if __name__ == "__main__":
     is_frozen = getattr(sys, "frozen", False)
 
     if is_frozen:
-        # PyInstaller exe — передаём объект, reload не нужен
-        uvicorn.run(
-            app,
-            host="127.0.0.1",
-            port=8000,
-            reload=False,
-        )
+        # Prod (PyInstaller sidecar): ОС выдаёт свободный порт, чтобы не
+        # конфликтовать с другими сервисами пользователя. Печатаем его в
+        # stdout — Tauri-обёртка ловит строку BACKEND_PORT и сообщает фронту.
+        import socket
+
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind(("127.0.0.1", 0))
+        port = sock.getsockname()[1]
+        print(f"BACKEND_PORT={port}", flush=True)
+
+        config = uvicorn.Config(app, log_level="info")
+        uvicorn.Server(config).run(sockets=[sock])
     else:
-        # Dev режим — передаём строку, reload работает
+        # Dev: фиксированный порт (по умолчанию 8000), reload работает как раньше.
+        # Можно переопределить через переменную окружения MATHTOOLS_PORT.
+        import os
+
+        port = int(os.environ.get("MATHTOOLS_PORT", "8000"))
+        print(f"BACKEND_PORT={port}", flush=True)
         uvicorn.run(
             "main:app",
             host="127.0.0.1",
-            port=8000,
+            port=port,
             reload=True,
         )
