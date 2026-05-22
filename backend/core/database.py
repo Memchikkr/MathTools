@@ -67,6 +67,12 @@ async def init_database(db_path: Path):
                         "Вычисление производных любого порядка",
                         "MathFunction",
                     ),
+                    (
+                        "slae-solver",
+                        "Решатель СЛАУ",
+                        "Гаусс с шагами, LU, итерационные Якоби и Зейделя",
+                        "Math",
+                    ),
                 ],
             )
             await conn.commit()
