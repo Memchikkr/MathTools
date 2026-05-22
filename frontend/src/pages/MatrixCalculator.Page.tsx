@@ -178,28 +178,6 @@ export function MatrixCalculatorPage() {
         }
 
         if (Array.isArray(result) && result.length > 0) {
-            // Для собственных значений и векторов
-            // if (result.eigenvalues) {
-            //     return (
-            //         <Stack gap="md">
-            //             <Paper withBorder p="md">
-            //                 <Text fw={500} mb="xs">Собственные значения:</Text>
-            //                 {result.eigenvalues.map((val: any, idx: number) => (
-            //                     <Text key={idx}>{val}</Text>
-            //                 ))}
-            //             </Paper>
-            //             <Paper withBorder p="md">
-            //                 <Text fw={500} mb="xs">Собственные векторы:</Text>
-            //                 {result.eigenvectors.map((vec: any[], idx: number) => (
-            //                     <div key={idx}>
-            //                         <Text size="sm" c="dimmed">Вектор {idx + 1}:</Text>
-            //                         <Text>[{vec.join(', ')}]</Text>
-            //                     </div>
-            //                 ))}
-            //             </Paper>
-            //         </Stack>
-            //     );
-            // }
 
             // Обычная матрица
             return (
@@ -245,7 +223,7 @@ export function MatrixCalculatorPage() {
                 setResult(response.data.result);
             }
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Ошибка соединения с сервером');
+            setError(err.response?.data?.detail || 'Ошибка вычисления');
         } finally {
             setLoading(false);
         }

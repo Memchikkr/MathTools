@@ -7,7 +7,7 @@ router = APIRouter(prefix="", tags=["Матричный калькулятор"]
 
 @router.post("/matrix-calculate", response_model=MatrixResponse)
 async def calculate(request: MatrixRequest):
-    """Матричные операции: сложение, вычитание, умножение, транспонирование, обратная, определитель, eigen."""
+    """Матричные операции: сложение, вычитание, умножение, транспонирование, обратная, определитель, собственные значения."""
     try:
         result = perform_operation(
             request.matrix_a, request.matrix_b, request.operation

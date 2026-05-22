@@ -48,7 +48,7 @@ def convert(value: str, from_base: int, to_base: int):
             terms.append(f"{digit}·{from_base}^{power}")
         sign_prefix = "−" if value.startswith("-") else ""
         steps.append({
-            "description": f"Шаг 1. Перевод '{value}' из системы {from_base} в десятичную",
+            "description": f"Перевод '{value}' из системы {from_base} в десятичную",
             "detail": f"{sign_prefix}({' + '.join(terms)}) = {decimal}",
         })
 
@@ -65,7 +65,7 @@ def convert(value: str, from_base: int, to_base: int):
                 divisions.append(f"{n} ÷ {to_base} = {q} (остаток {_DIGITS[rem]})")
                 n = q
         steps.append({
-            "description": f"Шаг 2. Перевод {decimal} в систему {to_base} последовательным делением",
+            "description": f"Перевод {decimal} в систему {to_base} последовательным делением",
             "detail": "\n".join(divisions)
             + f"\nЧитаем остатки снизу вверх → {result}",
         })

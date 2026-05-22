@@ -80,7 +80,7 @@ if __name__ == "__main__":
         config = uvicorn.Config(app, log_level="info")
         uvicorn.Server(config).run(sockets=[sock])
     else:
-        # Dev: фиксированный порт (по умолчанию 8000), reload работает как раньше.
+        # Dev: фиксированный порт (по умолчанию 8000).
         # Можно переопределить через переменную окружения MATHTOOLS_PORT.
         import os
 

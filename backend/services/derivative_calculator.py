@@ -9,7 +9,6 @@ def compute_derivative(
 ) -> Tuple[str, str]:
     """
     Возвращает: (результат_str, результат_latex).
-    Ошибки ввода пробрасываются как ValueError.
     """
     var = sp.symbols(variable)
     expr = safe_parse(expression)

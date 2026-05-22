@@ -67,7 +67,7 @@ export function EngineerCalculatorPage() {
                 setError(null);
             }
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Ошибка соединения с сервером');
+            setError(err.response?.data?.detail || 'Ошибка вычисления');
             setResult(null);
         } finally {
             setLoading(false);
@@ -76,21 +76,21 @@ export function EngineerCalculatorPage() {
 
     // Математические функции для кнопок
     const mathFunctions = [
-        { label: 'sin', value: 'sin(' },
-        { label: 'cos', value: 'cos(' },
-        { label: 'tan', value: 'tan(' },
-        { label: 'asin', value: 'asin(' },
-        { label: 'acos', value: 'acos(' },
-        { label: 'atan', value: 'atan(' },
-        { label: 'sinh', value: 'sinh(' },
-        { label: 'cosh', value: 'cosh(' },
-        { label: 'tanh', value: 'tanh(' },
-        { label: 'log', value: 'log(' },
-        { label: 'ln', value: 'ln(' },
-        { label: 'sqrt', value: 'sqrt(' },
-        { label: 'exp', value: 'exp(' },
-        { label: 'abs', value: 'abs(' },
-        { label: 'factorial', value: 'factorial(' },
+        { label: 'sin', value: 'sin()' },
+        { label: 'cos', value: 'cos()' },
+        { label: 'tan', value: 'tan()' },
+        { label: 'asin', value: 'asin()' },
+        { label: 'acos', value: 'acos()' },
+        { label: 'atan', value: 'atan()' },
+        { label: 'sinh', value: 'sinh()' },
+        { label: 'cosh', value: 'cosh()' },
+        { label: 'tanh', value: 'tanh()' },
+        { label: 'log', value: 'log()' },
+        { label: 'ln', value: 'ln()' },
+        { label: 'sqrt', value: 'sqrt()' },
+        { label: 'exp', value: 'exp()' },
+        { label: 'abs', value: 'abs()' },
+        { label: 'factorial', value: 'factorial()' },
     ];
 
     const constants = [

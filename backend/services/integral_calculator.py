@@ -12,7 +12,6 @@ def compute_integral(
 ) -> Tuple[str, str, Optional[float]]:
     """
     Возвращает: (результат_str, результат_latex, числовое_значение).
-    Ошибки ввода пробрасываются как ValueError.
     """
     var = sp.symbols(variable)
     expr = safe_parse(expression)

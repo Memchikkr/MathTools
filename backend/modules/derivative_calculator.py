@@ -7,6 +7,7 @@ router = APIRouter(prefix="", tags=["Калькулятор производны
 
 @router.post("/derivative-calculate", response_model=DerivativeResponse)
 async def calculate_derivative(request: DerivativeRequest):
+    """Вычисляет производную."""
     try:
         result, latex_result = compute_derivative(
             request.expression, request.variable, request.order

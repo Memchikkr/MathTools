@@ -51,7 +51,7 @@ export function DerivativeCalculatorPage() {
                 setResultLatex(response.data.result_latex);
             }
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Ошибка соединения с сервером');
+            setError(err.response?.data?.detail || 'Ошибка вычисления');
         } finally {
             setLoading(false);
         }
