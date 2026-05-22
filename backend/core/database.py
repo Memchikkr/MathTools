@@ -68,6 +68,12 @@ async def init_database(db_path: Path):
                         "MathFunction",
                     ),
                     (
+                        "slae-solver",
+                        "Решатель СЛАУ",
+                        "Гаусс с шагами, LU, итерационные Якоби и Зейделя",
+                        "Math",
+                    ),
+                    (
                         "ode-solver",
                         "Решатель ОДУ",
                         "Задача Коши y'=f(x,y) методами Эйлера и Рунге-Кутта 4",

@@ -6,6 +6,7 @@ import { PdfConverterPage } from './PdfConverter.Page';
 import { DocxConverterPage } from './DocxConverter.Page';
 import { IntegralCalculatorPage } from './IntegralCalculator.Page';
 import { DerivativeCalculatorPage } from './DerivativeCalculator.Page';
+import { SlaeSolverPage } from './SlaeSolver.Page';
 import { OdeSolverPage } from './OdeSolver.Page';
 
 export function ModulePage() {
@@ -27,6 +28,8 @@ export function ModulePage() {
             return <IntegralCalculatorPage />;
         case 'derivative-calculator':
             return <DerivativeCalculatorPage />;
+        case 'slae-solver':
+            return <SlaeSolverPage />;
         case 'ode-solver':
             return <OdeSolverPage />;
         default:
