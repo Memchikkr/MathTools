@@ -23,6 +23,6 @@ frontend/yarn-error.log*
 backend/.venv
 backend/dist
 backend/build
-backend/core/mathtools.db
+backend/mathtools.db
 backend/math-tools-backend.spec
 **__pycache__
