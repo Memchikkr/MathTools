@@ -4,6 +4,7 @@ import {
   Title,
   Paper,
   Stack,
+  Group,
   FileInput,
   Select,
   Slider,
@@ -12,11 +13,13 @@ import {
   Alert,
   LoadingOverlay,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { IconDownload, IconPhoto } from '@tabler/icons-react';
+import { IconDownload, IconFolderDown, IconPhoto } from '@tabler/icons-react';
 import axios from '../api/axios';
-import { saveBlob } from '../api/saveFile';
+import { saveBlob, saveBlobToDownloads } from '../api/saveFile';
+import { showSavedNotification } from '../api/saveFile.notify';
 import { BackButton } from '../components/BackButton';
+
+type SaveFn = (blob: Blob, filename: string) => Promise<string | null>;
 
 export function ImageConverterPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -35,7 +38,7 @@ export function ImageConverterPage() {
     { value: 'ico', label: 'ICO' },
   ];
 
-  const handleConvert = async () => {
+  const handleConvert = async (saveFn: SaveFn) => {
     if (files.length === 0) {
       setError('Выберите хотя бы одно изображение');
       return;
@@ -54,11 +57,10 @@ export function ImageConverterPage() {
 
     try {
       const response = await axios.post('/image-converter', formData, {
-        responseType: 'blob', // важно для бинарных данных
+        responseType: 'blob',
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      // Извлечение имени файла из заголовка Content-Disposition
       const contentDisposition = response.headers['content-disposition'];
       let filename = `converted_${targetFormat}.zip`;
       if (contentDisposition) {
@@ -69,12 +71,8 @@ export function ImageConverterPage() {
       }
 
       const blob = new Blob([response.data], { type: 'application/zip' });
-      await saveBlob(blob, filename);
-      notifications.show({
-        title: 'Успех',
-        message: 'Конвертация завершена',
-        color: 'green',
-      });
+      const path = await saveFn(blob, filename);
+      showSavedNotification(path);
     } catch (err: any) {
       console.error(err);
       setError(err.response?.data?.detail || 'Ошибка при конвертации');
@@ -135,14 +133,23 @@ export function ImageConverterPage() {
             />
           ) : null}
 
-          <Button
-            onClick={handleConvert}
-            loading={loading}
-            leftSection={<IconDownload size={16} />}
-            fullWidth
-          >
-            Конвертировать и скачать ZIP
-          </Button>
+          <Group grow>
+            <Button
+              onClick={() => handleConvert(saveBlob)}
+              loading={loading}
+              leftSection={<IconDownload size={16} />}
+            >
+              Сохранить как…
+            </Button>
+            <Button
+              onClick={() => handleConvert(saveBlobToDownloads)}
+              loading={loading}
+              leftSection={<IconFolderDown size={16} />}
+              variant="light"
+            >
+              В Загрузки
+            </Button>
+          </Group>
 
           {error && (
             <Alert title="Ошибка" color="red">

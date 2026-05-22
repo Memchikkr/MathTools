@@ -4,24 +4,27 @@ import {
     Title,
     Paper,
     Stack,
+    Group,
     FileInput,
     Button,
     Text,
     Alert,
     LoadingOverlay,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { IconFileText, IconDownload } from '@tabler/icons-react';
+import { IconFileText, IconDownload, IconFolderDown } from '@tabler/icons-react';
 import axios from '../api/axios';
-import { saveBlob } from '../api/saveFile';
+import { saveBlob, saveBlobToDownloads } from '../api/saveFile';
+import { showSavedNotification } from '../api/saveFile.notify';
 import { BackButton } from '../components/BackButton';
+
+type SaveFn = (blob: Blob, filename: string) => Promise<string | null>;
 
 export function DocxConverterPage() {
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleConvert = async () => {
+    const handleConvert = async (saveFn: SaveFn) => {
         if (!file) {
             setError('Выберите файл .docx');
             return;
@@ -31,7 +34,7 @@ export function DocxConverterPage() {
         setError(null);
 
         const formData = new FormData();
-        formData.append('file', file); // бэкенд ожидает поле "files"
+        formData.append('file', file);
 
         try {
             const response = await axios.post('/docx-to-pdf-converter', formData, {
@@ -39,7 +42,6 @@ export function DocxConverterPage() {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
-            // Извлечение имени файла из заголовка Content-Disposition
             const contentDisposition = response.headers['content-disposition'];
             let filename = 'converted.pdf';
             if (contentDisposition) {
@@ -50,12 +52,8 @@ export function DocxConverterPage() {
             }
 
             const blob = new Blob([response.data], { type: 'application/pdf' });
-            await saveBlob(blob, filename);
-            notifications.show({
-                title: 'Успех',
-                message: 'Конвертация завершена',
-                color: 'green',
-            });
+            const path = await saveFn(blob, filename);
+            showSavedNotification(path);
         } catch (err: any) {
             console.error(err);
             setError(err.response?.data?.detail || 'Ошибка при конвертации');
@@ -92,15 +90,25 @@ export function DocxConverterPage() {
                         </Text>
                     )}
 
-                    <Button
-                        onClick={handleConvert}
-                        loading={loading}
-                        leftSection={<IconDownload size={16} />}
-                        fullWidth
-                        disabled={!file}
-                    >
-                        Конвертировать в PDF
-                    </Button>
+                    <Group grow>
+                        <Button
+                            onClick={() => handleConvert(saveBlob)}
+                            loading={loading}
+                            leftSection={<IconDownload size={16} />}
+                            disabled={!file}
+                        >
+                            Сохранить как…
+                        </Button>
+                        <Button
+                            onClick={() => handleConvert(saveBlobToDownloads)}
+                            loading={loading}
+                            leftSection={<IconFolderDown size={16} />}
+                            variant="light"
+                            disabled={!file}
+                        >
+                            В Загрузки
+                        </Button>
+                    </Group>
 
                     {error && (
                         <Alert title="Ошибка" color="red">
