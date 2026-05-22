@@ -6,6 +6,7 @@ import { PdfConverterPage } from './PdfConverter.Page';
 import { DocxConverterPage } from './DocxConverter.Page';
 import { IntegralCalculatorPage } from './IntegralCalculator.Page';
 import { DerivativeCalculatorPage } from './DerivativeCalculator.Page';
+import { NumberTheoryPage } from './NumberTheory.Page';
 import { BaseConverterPage } from './BaseConverter.Page';
 import { PlotterPage } from './Plotter.Page';
 import { SlaeSolverPage } from './SlaeSolver.Page';
@@ -30,6 +31,8 @@ export function ModulePage() {
             return <IntegralCalculatorPage />;
         case 'derivative-calculator':
             return <DerivativeCalculatorPage />;
+        case 'number-theory':
+            return <NumberTheoryPage />;
         case 'base-converter':
             return <BaseConverterPage />;
         case 'plotter':
