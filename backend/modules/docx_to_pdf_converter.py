@@ -1,3 +1,4 @@
+from core.http import content_disposition_attachment
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
 import io
@@ -21,7 +22,9 @@ async def convert_docx_to_pdf_endpoint(
         response = StreamingResponse(
             io.BytesIO(pdf_bytes), media_type="application/pdf"
         )
-        response.headers["Content-Disposition"] = f"attachment; filename={new_filename}"
+        response.headers["Content-Disposition"] = content_disposition_attachment(
+            new_filename, "converted.pdf"
+        )
         return response
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
